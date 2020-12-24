@@ -52,6 +52,22 @@ rule
       result["items"] = type.items if type.array?
     end
   }
+  | KEYWORD_KEY ":" expr data_type
+  {
+    kywd, _, id, type = val
+    raise "Invalid keyword: `$#{kywd}'" if kywd != "id"
+
+    result = {
+      "$id" => id,
+    }
+
+    if type.ref?
+      result["$ref"] = type.ref
+    else
+      result["type"] = type.type
+      result["items"] = type.items if type.array?
+    end
+  }
   | schema_name data_type
   {
     name, type = val
