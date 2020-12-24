@@ -1,0 +1,29 @@
+var root = (join-uri "http://example.com")
+
+Product $id: (root "product.schema.json") <object> {
+  #
+  # `>>' means string.
+  # It has the same means as enclosing a string with "".
+  #
+  >> A product from Acme's catalog
+
+  + id <integer> {
+    >> The unique identifier for a product
+  }
+
+  + name <string> {
+    >> Name of the product
+  }
+
+  + price <number> {
+    >> The price of the product
+
+    @exclusive-minimum: 0
+  }
+
+  - dimentions <object> {
+    + length <number>
+    + width  <number>
+    + height <number>
+  }
+}

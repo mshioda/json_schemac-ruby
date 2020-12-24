@@ -1,0 +1,11 @@
+<array> {
+  @items: [
+    { $ref: (ref employee) }
+  ]
+
+  def employee is <object> {
+    + name <string>
+    + email <string> { @format: "email" }
+    - date-of-birth <string> { @format: "date" }
+  }
+}

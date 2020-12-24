@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'optparse'
+require_relative '../lib/schema_parser.tab.rb'
+require_relative '../lib/schema_scanner'
+
+Version = "0.1.0"
+
+opt = OptionParser.new
+opt.parse!(ARGV)
+
+streams = ARGV.empty? ? [$stdin] : ARGV.map {|f| File.new(f) }
+streams.each do |stream|
+  parser = SchemaParser.new()
+  result = parser.parse(stream.read)
+  puts(JSON.pretty_generate(result))
+end
