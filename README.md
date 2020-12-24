@@ -26,7 +26,7 @@ You can add some properties to a schema with letter `+` or `-`.
 ```
 
 JSON schema you can get is the following:
-```
+```json
 {
   "type": "object",
   "properties": {
@@ -44,4 +44,4 @@ JSON schema you can get is the following:
 }
 ```
 
-See samples for detail.
+See [samples](https://github.com/mshioda/json_schemac-ruby/tree/main/samples) for detail.
