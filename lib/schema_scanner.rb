@@ -24,11 +24,11 @@ class SchemaParser
       [:STRING, replace_esc(s)]
     },
 
-    /\$([\w][-\d\w]+)/ => ->(s) {
+    /\$([\w][-\d\w]*)/ => ->(s) {
       [:KEYWORD_KEY, s]
     },
 
-    /@([\w][-\d\w]+)/ => ->(s) {
+    /@([\w][-\d\w]*)/ => ->(s) {
       [:ID_KEY, s]
     },
 
@@ -36,24 +36,26 @@ class SchemaParser
       [:STRING_KEY, s]
     },
 
-    /([\w][-\d\w]+)/ => ->(s) {
+    /([-+]?\d+(\.\d+)(e\d+)?)\b/ => ->(s) {
+      [:FLOAT, s.to_f]
+    },
+
+    /([-+]?\d+)\b/ => ->(s) {
+      [:INT, s.to_i]
+    },
+
+    /([\w][-\w]*)/ => ->(s) {
       if s == "true" || s == "false"
         [:BOOL, s == "true"]
       elsif s == "null"
         [:NULL, s]
       elsif KEYWORDS.include?(s)
         [s, s]
-      else
+      elsif [('a'...'z'), ('A'...'Z')].any? {|r| r.include? s[0] }
         [:ID, s]
+      else
+        [s, s]
       end
-    },
-
-    /([-+]?\d+(\.\d+)?(e\d+))/ => ->(s) {
-      [:FLOAT, s.to_f]
-    },
-
-    /([-+]?\d+)/ => ->(s) {
-      [:INT, s.to_i]
     },
 
     /(.|\n)/ => ->(s) {
