@@ -23,77 +23,32 @@ rule
     kywd, _, id, name, type = val
     raise "Invalid keyword: `$#{kywd}'" if kywd != "id"
 
-    result = {
-      "$id" => id,
-      "title" => name
-    }
-
-    if type.ref?
-      result["$ref"] = type.ref
-    else
-      result["type"] = type.type
-      result["items"] = type.items if type.array?
-    end
+    result = gen_schema_head(type, name: name, id: id)
   }
   | schema_name KEYWORD_KEY ":" expr data_type
   {
     name, kywd, _, id, type = val
     raise "Invalid keyword: `$#{kywd}'" if kywd != "id"
 
-    result = {
-      "$id" => id,
-      "title" => name,
-    }
-
-    if type.ref?
-      result["$ref"] = type.ref
-    else
-      result["type"] = type.type
-      result["items"] = type.items if type.array?
-    end
+    result = gen_schema_head(type, name: name, id: id)
   }
   | KEYWORD_KEY ":" expr data_type
   {
     kywd, _, id, type = val
     raise "Invalid keyword: `$#{kywd}'" if kywd != "id"
 
-    result = {
-      "$id" => id,
-    }
-
-    if type.ref?
-      result["$ref"] = type.ref
-    else
-      result["type"] = type.type
-      result["items"] = type.items if type.array?
-    end
+    result = gen_schema_head(type, id: id)
   }
   | schema_name data_type
   {
     name, type = val
 
-    result = {
-      "title" => name,
-    }
-
-    if type.ref?
-      result["$ref"] = type.ref
-    else
-      result["type"] = type.type
-      result["items"] = type.items if type.array?
-    end
+    result = gen_schema_head(type, name: name)
   }
   | data_type
   {
     type = val[0]
-    result = {}
-
-    if type.ref?
-      result["$ref"] = type.ref
-    else
-      result["type"] = type.type
-      result["items"] = type.items if type.array?
-    end
+    result = gen_schema_head(type)
   }
 
   schema_name: STRING | ID
@@ -386,4 +341,19 @@ def camelcase(str)
   str.split("-").inject(nil) {|b, s|
     b ? b + s.capitalize : s
   }
+end
+
+def gen_schema_head(datatype, name: nil, id: nil)
+  result = {}
+  result["$id"] = id if id
+  result["title"] = name if name
+
+  if datatype.ref?
+    result["$ref"] = datatype.ref
+  else
+    result["type"] = datatype.type
+    result["items"] = datatype.items if datatype.array?
+  end
+
+  result
 end
