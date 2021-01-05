@@ -336,6 +336,21 @@ end
 
 ---- inner
 
+def initialize
+  super()
+  @scanner = SchemaScanner.new
+  @vars = { }
+end
+
+def parse(str)
+  @scanner.scan(str)
+  do_parse
+end
+
+def next_token
+  @scanner.next_token
+end
+
 private
 def camelcase(str)
   str.split("-").inject(nil) {|b, s|

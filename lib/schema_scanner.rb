@@ -1,5 +1,12 @@
-class SchemaParser
+BUILT_INS = {
+  "join-uri" => ->(arg) {
+    ->(*args1) { [arg, *args1].join("/") }
+  }
+}
+
+class SchemaScanner
   NONE = []
+
   KEYWORDS = %w[
     def
     is
@@ -63,10 +70,11 @@ class SchemaParser
     }
   }
 
-  def parse(str)
+  def initialize
     @q = []
-    @vars = { }
+  end
 
+  def scan(str)
     until str.nil?
       SCANNERS.find do |k, v|
         if str =~ /\A#{k}/ && val = v.call($1)
@@ -79,19 +87,11 @@ class SchemaParser
     end
 
     @q.push [false, '$end']
-
-    do_parse
   end
 
   def next_token
     @q.shift
   end
-
-  BUILT_INS = {
-    "join-uri" => ->(arg) {
-      ->(*args1) { [arg, *args1].join("/") }
-    }
-  }
 end
 
 def replace_esc(str)
