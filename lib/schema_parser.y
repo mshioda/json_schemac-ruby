@@ -67,6 +67,16 @@ rule
   var_value:
     STRING
   | ID
+  {
+    id = val[0]
+    value = @vars[id]
+
+    if value
+      result = value === Proc ? value.call : value
+    else
+      raise "invalid identifier: `#{id}'"
+    end
+  }
   | "(" ID var_value ")"
   {
     _, id, arg = val

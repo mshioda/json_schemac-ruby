@@ -26,7 +26,7 @@ end
 
 class SchemaParser < Racc::Parser
 
-module_eval(<<'...end schema_parser.y/module_eval...', 'schema_parser.y', 344)
+module_eval(<<'...end schema_parser.y/module_eval...', 'schema_parser.y', 354)
 
 def initialize
   super()
@@ -189,7 +189,7 @@ racc_reduce_table = [
   2, 30, :_reduce_none,
   0, 30, :_reduce_13,
   1, 38, :_reduce_none,
-  1, 38, :_reduce_none,
+  1, 38, :_reduce_15,
   4, 38, :_reduce_16,
   5, 33, :_reduce_17,
   0, 33, :_reduce_18,
@@ -461,9 +461,22 @@ module_eval(<<'.,.,', 'schema_parser.y', 64)
 
 # reduce 14 omitted
 
-# reduce 15 omitted
+module_eval(<<'.,.,', 'schema_parser.y', 70)
+  def _reduce_15(val, _values, result)
+        id = val[0]
+    value = @vars[id]
 
-module_eval(<<'.,.,', 'schema_parser.y', 71)
+    if value
+      result = value === Proc ? value.call : value
+    else
+      raise "invalid identifier: `#{id}'"
+    end
+  
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'schema_parser.y', 81)
   def _reduce_16(val, _values, result)
         _, id, arg = val
     fnc = nil
@@ -482,7 +495,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 71)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 88)
+module_eval(<<'.,.,', 'schema_parser.y', 98)
   def _reduce_17(val, _values, result)
         result = val[1].merge(val[2]).merge(val[3])
   
@@ -490,7 +503,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 88)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 92)
+module_eval(<<'.,.,', 'schema_parser.y', 102)
   def _reduce_18(val, _values, result)
         result = { }
   
@@ -498,7 +511,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 92)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 98)
+module_eval(<<'.,.,', 'schema_parser.y', 108)
   def _reduce_19(val, _values, result)
         result = DataType.new(type: val[1])
   
@@ -506,7 +519,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 98)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 102)
+module_eval(<<'.,.,', 'schema_parser.y', 112)
   def _reduce_20(val, _values, result)
         result = DataType.new(type: val[1])
   
@@ -514,7 +527,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 102)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 106)
+module_eval(<<'.,.,', 'schema_parser.y', 116)
   def _reduce_21(val, _values, result)
         result = DataType.new(type: "object")
   
@@ -522,7 +535,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 106)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 110)
+module_eval(<<'.,.,', 'schema_parser.y', 120)
   def _reduce_22(val, _values, result)
         result = DataType.new(type: "array", items: val[2])
   
@@ -530,7 +543,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 110)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 114)
+module_eval(<<'.,.,', 'schema_parser.y', 124)
   def _reduce_23(val, _values, result)
         result = DataType.new(type: "array", items: val[2])
   
@@ -538,7 +551,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 114)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 118)
+module_eval(<<'.,.,', 'schema_parser.y', 128)
   def _reduce_24(val, _values, result)
         id = val[3]
     result = DataType.new(ref: "#/$defs/#{id}")
@@ -547,7 +560,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 118)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 125)
+module_eval(<<'.,.,', 'schema_parser.y', 135)
   def _reduce_25(val, _values, result)
         result = [val[0], val[2]]
   
@@ -555,7 +568,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 125)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 129)
+module_eval(<<'.,.,', 'schema_parser.y', 139)
   def _reduce_26(val, _values, result)
         result = [*val[0], val[2]]
   
@@ -567,7 +580,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 129)
 
 # reduce 28 omitted
 
-module_eval(<<'.,.,', 'schema_parser.y', 137)
+module_eval(<<'.,.,', 'schema_parser.y', 147)
   def _reduce_29(val, _values, result)
         result = val[0].merge(val[1])
   
@@ -575,7 +588,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 137)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 141)
+module_eval(<<'.,.,', 'schema_parser.y', 151)
   def _reduce_30(val, _values, result)
         props = val.inject({}) {|hsh, v|
       hsh.merge(v["properties"] || {})
@@ -591,7 +604,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 141)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 153)
+module_eval(<<'.,.,', 'schema_parser.y', 163)
   def _reduce_31(val, _values, result)
         result = {}
   
@@ -599,7 +612,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 153)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 158)
+module_eval(<<'.,.,', 'schema_parser.y', 168)
   def _reduce_32(val, _values, result)
         result = {
       val[0] => val[2]
@@ -609,7 +622,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 158)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 166)
+module_eval(<<'.,.,', 'schema_parser.y', 176)
   def _reduce_33(val, _values, result)
         result = val[0].merge(val[1])
   
@@ -617,7 +630,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 166)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 170)
+module_eval(<<'.,.,', 'schema_parser.y', 180)
   def _reduce_34(val, _values, result)
         result = {}
   
@@ -627,7 +640,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 170)
 
 # reduce 35 omitted
 
-module_eval(<<'.,.,', 'schema_parser.y', 177)
+module_eval(<<'.,.,', 'schema_parser.y', 187)
   def _reduce_36(val, _values, result)
         result = camelcase(val[0])
   
@@ -635,7 +648,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 177)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 181)
+module_eval(<<'.,.,', 'schema_parser.y', 191)
   def _reduce_37(val, _values, result)
         key = camelcase(val[0])
     result = "$#{key}"
@@ -654,7 +667,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 181)
 
 # reduce 42 omitted
 
-module_eval(<<'.,.,', 'schema_parser.y', 189)
+module_eval(<<'.,.,', 'schema_parser.y', 199)
   def _reduce_43(val, _values, result)
         result = val[1]
   
@@ -662,7 +675,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 189)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 193)
+module_eval(<<'.,.,', 'schema_parser.y', 203)
   def _reduce_44(val, _values, result)
         result = val[1]
   
@@ -670,7 +683,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 193)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 197)
+module_eval(<<'.,.,', 'schema_parser.y', 207)
   def _reduce_45(val, _values, result)
         result = [*val[1]]
   
@@ -678,7 +691,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 197)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 201)
+module_eval(<<'.,.,', 'schema_parser.y', 211)
   def _reduce_46(val, _values, result)
         id = val[2]
     result = "#/$defs/#{id}"
@@ -687,7 +700,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 201)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 208)
+module_eval(<<'.,.,', 'schema_parser.y', 218)
   def _reduce_47(val, _values, result)
         result = [val[0]]
   
@@ -695,7 +708,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 208)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 212)
+module_eval(<<'.,.,', 'schema_parser.y', 222)
   def _reduce_48(val, _values, result)
         result = [*val[0], val[1]]
   
@@ -703,7 +716,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 212)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 218)
+module_eval(<<'.,.,', 'schema_parser.y', 228)
   def _reduce_49(val, _values, result)
         required, name, type, schema = val
 
@@ -729,7 +742,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 218)
 
 # reduce 50 omitted
 
-module_eval(<<'.,.,', 'schema_parser.y', 241)
+module_eval(<<'.,.,', 'schema_parser.y', 251)
   def _reduce_51(val, _values, result)
         result = camelcase(val[0])
   
@@ -737,7 +750,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 241)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 247)
+module_eval(<<'.,.,', 'schema_parser.y', 257)
   def _reduce_52(val, _values, result)
         result = [val[0]]
   
@@ -745,7 +758,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 247)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 251)
+module_eval(<<'.,.,', 'schema_parser.y', 261)
   def _reduce_53(val, _values, result)
         result = [*val[0], val[1]]
   
@@ -753,7 +766,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 251)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 257)
+module_eval(<<'.,.,', 'schema_parser.y', 267)
   def _reduce_54(val, _values, result)
         _, id, value = val
 
@@ -774,7 +787,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 257)
 
 # reduce 56 omitted
 
-module_eval(<<'.,.,', 'schema_parser.y', 274)
+module_eval(<<'.,.,', 'schema_parser.y', 284)
   def _reduce_57(val, _values, result)
         result = @vars[val[0]]
   
@@ -782,7 +795,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 274)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 280)
+module_eval(<<'.,.,', 'schema_parser.y', 290)
   def _reduce_58(val, _values, result)
         result = [val[0], *val[1]]
   
@@ -790,14 +803,14 @@ module_eval(<<'.,.,', 'schema_parser.y', 280)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 282)
+module_eval(<<'.,.,', 'schema_parser.y', 292)
   def _reduce_59(val, _values, result)
      result = [] 
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 287)
+module_eval(<<'.,.,', 'schema_parser.y', 297)
   def _reduce_60(val, _values, result)
         desc = val[0]["description"]
 
@@ -809,7 +822,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 287)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 293)
+module_eval(<<'.,.,', 'schema_parser.y', 303)
   def _reduce_61(val, _values, result)
      result = {} 
     result
@@ -822,7 +835,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 293)
 
 # reduce 64 omitted
 
-module_eval(<<'.,.,', 'schema_parser.y', 301)
+module_eval(<<'.,.,', 'schema_parser.y', 311)
   def _reduce_65(val, _values, result)
         a = val[0]["$defs"]
     b = val[1]["$defs"] || {}
@@ -835,7 +848,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 301)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 309)
+module_eval(<<'.,.,', 'schema_parser.y', 319)
   def _reduce_66(val, _values, result)
         result = { }
   
@@ -843,7 +856,7 @@ module_eval(<<'.,.,', 'schema_parser.y', 309)
   end
 .,.,
 
-module_eval(<<'.,.,', 'schema_parser.y', 315)
+module_eval(<<'.,.,', 'schema_parser.y', 325)
   def _reduce_67(val, _values, result)
         result = {
       "$defs" => {
