@@ -22,5 +22,16 @@ class TestSchemaParser < Test::Unit::TestCase
                  actual["$id"])
     assert_equal("object", actual["type"])
   end
-end
 
+  def test_parse_built_in_join_uri_with_two_arguments
+    actual = @parser.parse(<<~EOS)
+      var host = "http://example.com"
+      $id: (join-uri host "sample.json") <object> { }
+    EOS
+
+    assert_equal({
+                   "$id" => "http://example.com/sample.json",
+                   "type" => "object"
+                 }, actual)
+  end
+end

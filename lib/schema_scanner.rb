@@ -1,6 +1,6 @@
 BUILT_INS = {
-  "join-uri" => ->(arg) {
-    ->(*args1) { [arg, *args1].join("/") }
+  "join-uri" => ->(*arg) {
+    ->(*args1) { [*arg, *args1].join("/") }
   }
 }
 

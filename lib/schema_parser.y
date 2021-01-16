@@ -253,28 +253,34 @@ rule
   }
 
   expr:
-    "(" ID expr ")"
+    "(" ID arguments ")"
   {
     _, id, value = val
 
     if @vars[id] && @vars[id].respond_to?(:call)
-      result = @vars[id].call(value)
-    else
-      raise "Invalid identifier `#{id}'"
-    end
-  }
-  | "(" ID ID ")"
-  {
-    id = val[1]
-    value = @vars[val[2]]
-
-    if @vars[id] && @vars[id].respond_to?(:call)
-      result = @vars[id].call(value)
+      result = @vars[id].call(*value)
+    elsif BUILT_INS[id]&.respond_to?(:call)
+      result = BUILT_INS[id].call(*value)
+      result = result.call if result === Proc
     else
       raise "Invalid identifier `#{id}'"
     end
   }
   | attr_value
+
+  argument:
+    expr
+  | ID
+  {
+    result = @vars[val[0]]
+  }
+
+  arguments:
+    argument arguments
+  {
+    result = [val[0], *val[1]]
+  }
+  | /* none */ { result = [] }
 
   description:
     description STRING
